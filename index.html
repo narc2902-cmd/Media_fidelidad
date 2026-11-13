@@ -1,0 +1,533 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mockup - Configuración de Flujo</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        .step-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: 700;
+            transition: all .3s ease;
+        }
+
+        .step-active {
+            background: #334155;
+            color: white;
+            box-shadow: 0 0 0 5px #e2e8f0;
+        }
+
+        .step-complete {
+            background: #16a34a;
+            color: white;
+        }
+
+        .step-locked {
+            background: #e2e8f0;
+            color: #94a3b8;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            background: white;
+            color: #334155;
+            outline: none;
+            transition: .2s;
+        }
+
+        .input-field:focus {
+            border-color: #475569;
+            box-shadow: 0 0 0 3px #e2e8f0;
+        }
+
+        .option-card {
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .option-card:hover {
+            border-color: #64748b;
+            background: #f8fafc;
+        }
+
+        .option-card.selected {
+            border: 2px solid #334155;
+            background: #f1f5f9;
+        }
+
+        .hidden-step {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
+
+    <main class="w-full max-w-4xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+
+        <!-- HEADER -->
+        <header class="bg-white px-6 md:px-9 py-7 border-b border-slate-200">
+
+            <div class="flex justify-between items-start gap-4">
+
+                <div>
+                    <div class="flex items-center gap-2 text-xs text-slate-400 uppercase tracking-wider mb-3">
+                        <i class="fa-solid fa-sliders"></i>
+                        Panel de administración
+                    </div>
+
+                    <h1 class="text-2xl md:text-3xl font-bold text-slate-800">
+                        Configuración de flujo
+                    </h1>
+
+                    <p class="text-sm text-slate-500 mt-2">
+                        Configure los parámetros necesarios para continuar.
+                    </p>
+                </div>
+
+                <div class="hidden sm:flex w-12 h-12 rounded-xl bg-slate-100 items-center justify-center text-slate-600">
+                    <i class="fa-solid fa-layer-group text-xl"></i>
+                </div>
+
+            </div>
+
+            <!-- PROGRESS -->
+            <div class="mt-7">
+
+                <div class="flex justify-between text-xs mb-2">
+                    <span class="font-semibold text-slate-600">
+                        Progreso de configuración
+                    </span>
+
+                    <span id="progressText" class="text-slate-500">
+                        1 de 2 pasos
+                    </span>
+                </div>
+
+                <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div id="progressBar"
+                        class="h-full bg-slate-700 rounded-full transition-all duration-500"
+                        style="width: 50%">
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- CONTENT -->
+        <section class="p-6 md:p-9">
+
+            <div class="relative">
+
+                <!-- CONNECTOR -->
+                <div class="absolute left-5 top-10 bottom-10 w-0.5 bg-slate-200"></div>
+
+                <!-- STEP 1 -->
+                <div class="relative flex gap-5 mb-10">
+
+                    <div id="circle1" class="step-circle step-active z-10">
+                        1
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+
+                        <div class="mb-5">
+                            <h2 class="font-bold text-lg text-slate-800">
+                                Entorno de despliegue
+                            </h2>
+
+                            <p class="text-sm text-slate-500 mt-1">
+                                Seleccione el entorno donde se ejecutará el sistema.
+                            </p>
+                        </div>
+
+                        <label class="block text-sm font-semibold text-slate-700 mb-3">
+                            Tipo de entorno <span class="text-red-500">*</span>
+                        </label>
+
+                        <div class="grid sm:grid-cols-2 gap-4">
+
+                            <!-- PRODUCTION -->
+                            <div id="prodCard"
+                                class="option-card"
+                                onclick="selectEnvironment('prod')">
+
+                                <div class="flex justify-between items-center">
+
+                                    <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                        <i class="fa-solid fa-server"></i>
+                                    </div>
+
+                                    <i id="prodCheck"
+                                        class="fa-solid fa-circle-check text-slate-700 hidden">
+                                    </i>
+
+                                </div>
+
+                                <h3 class="font-bold text-slate-800 mt-4">
+                                    Producción
+                                </h3>
+
+                                <p class="text-xs text-slate-500 mt-2">
+                                    Entorno estable para la ejecución final.
+                                </p>
+
+                                <span class="inline-block mt-4 text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full">
+                                    Estable
+                                </span>
+
+                            </div>
+
+                            <!-- TEST -->
+                            <div id="testCard"
+                                class="option-card"
+                                onclick="selectEnvironment('test')">
+
+                                <div class="flex justify-between items-center">
+
+                                    <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                        <i class="fa-solid fa-flask"></i>
+                                    </div>
+
+                                    <i id="testCheck"
+                                        class="fa-solid fa-circle-check text-slate-700 hidden">
+                                    </i>
+
+                                </div>
+
+                                <h3 class="font-bold text-slate-800 mt-4">
+                                    Testing
+                                </h3>
+
+                                <p class="text-xs text-slate-500 mt-2">
+                                    Entorno aislado para realizar pruebas.
+                                </p>
+
+                                <span class="inline-block mt-4 text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full">
+                                    Pruebas
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div id="step2"
+                    class="relative flex gap-5 opacity-50">
+
+                    <div id="circle2" class="step-circle step-locked z-10">
+                        <i class="fa-solid fa-lock text-sm"></i>
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+
+                        <div class="mb-5">
+                            <h2 class="font-bold text-lg text-slate-800">
+                                Parámetros de configuración
+                            </h2>
+
+                            <p class="text-sm text-slate-500 mt-1">
+                                Defina las características del entorno seleccionado.
+                            </p>
+                        </div>
+
+                        <div id="lockedMessage"
+                            class="bg-slate-50 border border-dashed border-slate-300 rounded-xl p-6 text-center">
+
+                            <i class="fa-solid fa-lock text-slate-400 text-xl"></i>
+
+                            <p class="text-sm font-semibold text-slate-600 mt-3">
+                                Paso bloqueado
+                            </p>
+
+                            <p class="text-xs text-slate-400 mt-1">
+                                Seleccione un entorno para desbloquear esta sección.
+                            </p>
+
+                        </div>
+
+                        <!-- DYNAMIC FIELDS -->
+                        <div id="configFields" class="hidden-step space-y-5">
+
+                            <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                                <p class="text-xs text-slate-500">Entorno seleccionado</p>
+
+                                <p id="selectedEnvironment"
+                                    class="font-bold text-slate-800 mt-1">
+                                    Producción
+                                </p>
+                            </div>
+
+                            <div class="grid sm:grid-cols-2 gap-5">
+
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">
+                                        Región del servidor
+                                    </label>
+
+                                    <select id="region" class="input-field">
+                                        <option value="">Seleccione región</option>
+                                        <option value="colombia">Colombia</option>
+                                        <option value="usa">Estados Unidos</option>
+                                        <option value="europa">Europa</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">
+                                        Nivel de acceso
+                                    </label>
+
+                                    <select id="access" class="input-field">
+                                        <option value="">Seleccione nivel</option>
+                                        <option value="admin">Administrador</option>
+                                        <option value="user">Usuario</option>
+                                        <option value="readonly">Solo lectura</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">
+                                        Tiempo de ejecución
+                                    </label>
+
+                                    <select id="execution" class="input-field">
+                                        <option value="">Seleccione tiempo</option>
+                                        <option value="5">5 minutos</option>
+                                        <option value="15">15 minutos</option>
+                                        <option value="30">30 minutos</option>
+                                        <option value="60">60 minutos</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">
+                                        Identificador
+                                    </label>
+
+                                    <input id="identifier"
+                                        type="text"
+                                        placeholder="Ej: FLUJO-001"
+                                        class="input-field">
+                                </div>
+
+                            </div>
+
+                            <div class="bg-slate-50 rounded-lg border border-slate-200 p-4">
+                                <label class="flex items-center gap-3 cursor-pointer">
+
+                                    <input id="notifications"
+                                        type="checkbox"
+                                        checked
+                                        class="w-4 h-4 accent-slate-700">
+
+                                    <span class="text-sm text-slate-700">
+                                        Activar notificaciones del sistema
+                                    </span>
+
+                                </label>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="px-6 md:px-9 py-5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+
+            <button onclick="resetForm()"
+                class="text-sm font-semibold text-slate-500 hover:text-slate-800 transition">
+                <i class="fa-solid fa-rotate-left mr-2"></i>
+                Descartar cambios
+            </button>
+
+            <button onclick="validateForm()"
+                class="w-full sm:w-auto px-7 py-3 rounded-lg bg-slate-800 text-white text-sm font-semibold hover:bg-slate-700 transition shadow-lg">
+
+                Validar configuración
+                <i class="fa-solid fa-arrow-right ml-2"></i>
+
+            </button>
+
+        </footer>
+
+        <!-- RESULT -->
+        <div id="result"
+            class="hidden mx-6 md:mx-9 mb-6 rounded-lg p-4 text-sm">
+        </div>
+
+    </main>
+
+    <script>
+
+        let environment = "";
+
+        function selectEnvironment(value) {
+
+            environment = value;
+
+            document.getElementById("prodCard").classList.toggle(
+                "selected", value === "prod"
+            );
+
+            document.getElementById("testCard").classList.toggle(
+                "selected", value === "test"
+            );
+
+            document.getElementById("prodCheck").classList.toggle(
+                "hidden", value !== "prod"
+            );
+
+            document.getElementById("testCheck").classList.toggle(
+                "hidden", value !== "test"
+            );
+
+            // DESBLOQUEAR PASO 2
+            document.getElementById("lockedMessage").classList.add("hidden");
+
+            document.getElementById("configFields").classList.remove("hidden-step");
+
+            document.getElementById("step2").classList.remove("opacity-50");
+
+            document.getElementById("circle1").className =
+                "step-circle step-complete z-10";
+
+            document.getElementById("circle1").innerHTML =
+                '<i class="fa-solid fa-check"></i>';
+
+            document.getElementById("circle2").className =
+                "step-circle step-active z-10";
+
+            document.getElementById("circle2").innerHTML = "2";
+
+            document.getElementById("selectedEnvironment").textContent =
+                value === "prod" ? "Producción" : "Testing";
+
+            document.getElementById("progressBar").style.width = "100%";
+
+            document.getElementById("progressText").textContent =
+                "2 de 2 pasos";
+
+            document.getElementById("result").classList.add("hidden");
+        }
+
+        function validateForm() {
+
+            const result = document.getElementById("result");
+
+            if (!environment) {
+                showMessage("Debe seleccionar un entorno de despliegue.", false);
+                return;
+            }
+
+            const region = document.getElementById("region").value;
+            const access = document.getElementById("access").value;
+            const execution = document.getElementById("execution").value;
+            const identifier = document.getElementById("identifier").value.trim();
+
+            if (!region || !access || !execution || !identifier) {
+                showMessage("Complete todos los campos obligatorios del segundo paso.", false);
+                return;
+            }
+
+            showMessage(
+                "¡Configuración validada correctamente! Entorno: " +
+                (environment === "prod" ? "Producción" : "Testing") +
+                ". Identificador: " + identifier + ".",
+                true
+            );
+        }
+
+        function showMessage(message, success) {
+
+            const result = document.getElementById("result");
+
+            result.classList.remove("hidden");
+
+            result.className = success
+                ? "mx-6 md:mx-9 mb-6 rounded-lg p-4 text-sm bg-green-50 border border-green-200 text-green-700"
+                : "mx-6 md:mx-9 mb-6 rounded-lg p-4 text-sm bg-red-50 border border-red-200 text-red-700";
+
+            result.innerHTML =
+                '<i class="fa-solid ' +
+                (success ? 'fa-circle-check' : 'fa-circle-exclamation') +
+                ' mr-2"></i>' + message;
+        }
+
+        function resetForm() {
+
+            environment = "";
+
+            document.getElementById("region").value = "";
+            document.getElementById("access").value = "";
+            document.getElementById("execution").value = "";
+            document.getElementById("identifier").value = "";
+            document.getElementById("notifications").checked = true;
+
+            document.getElementById("prodCard").classList.remove("selected");
+            document.getElementById("testCard").classList.remove("selected");
+
+            document.getElementById("prodCheck").classList.add("hidden");
+            document.getElementById("testCheck").classList.add("hidden");
+
+            document.getElementById("lockedMessage").classList.remove("hidden");
+            document.getElementById("configFields").classList.add("hidden-step");
+
+            document.getElementById("step2").classList.add("opacity-50");
+
+            document.getElementById("circle1").className =
+                "step-circle step-active z-10";
+
+            document.getElementById("circle1").innerHTML = "1";
+
+            document.getElementById("circle2").className =
+                "step-circle step-locked z-10";
+
+            document.getElementById("circle2").innerHTML =
+                '<i class="fa-solid fa-lock text-sm"></i>';
+
+            document.getElementById("progressBar").style.width = "50%";
+
+            document.getElementById("progressText").textContent =
+                "1 de 2 pasos";
+
+            document.getElementById("result").classList.add("hidden");
+        }
+
+    </script>
+
+</body>
+</html>
